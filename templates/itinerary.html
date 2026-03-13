@@ -158,8 +158,96 @@
         .legend-evening {
             background-color: #9c27b0;
         }
-        .form-section {
-            margin-bottom: 10px;
+        .location-highlight {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #2196f3;
+        }
+        .location-highlight h3 {
+            color: #1565c0;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        .location-tips {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #ff6f00;
+        }
+        .location-tips h4 {
+            color: #e65100;
+            margin-top: 0;
+            font-size: 1.1em;
+        }
+        .activity-location {
+            font-weight: bold;
+            color: #2e7d32;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        .activity-description {
+            color: #424242;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        .place-link {
+            color: #ff6f00;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .place-link:hover {
+            color: #e65100;
+            text-decoration: underline;
+        }
+        .map-section {
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #9c27b0;
+            text-align: center;
+        }
+        .map-section h3 {
+            color: #7b1fa2;
+            margin-top: 0;
+            font-size: 1.4em;
+        }
+        .map-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .map-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+        .map-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
+        }
+        .google-maps {
+            background: linear-gradient(135deg, #4285f4 0%, #1a73e8 100%);
+        }
+        .google-maps:hover {
+            box-shadow: 0 4px 10px rgba(66, 133, 244, 0.4);
+        }
+        .open-street {
+            background: linear-gradient(135deg, #7cb342 0%, #558b2f 100%);
+        }
+        .open-street:hover {
+            box-shadow: 0 4px 10px rgba(124, 179, 66, 0.4);
         }
     </style>
 </head>
@@ -170,8 +258,69 @@
         <div class="header">
             <h1>{{ itinerary.title }}</h1>
             <div class="header-info">
-                <p>📍 <strong>{{ itinerary.location }}</strong> • 📅 <strong>{{ itinerary.duration }} Days</strong></p>
-                <p>Created on {{ itinerary.created_date.strftime('%B %d, %Y') }}</p>
+                <p>📍 <strong><a href="https://www.google.com/maps/search/{{ itinerary.location | urlencode }}" target="_blank" style="color: #ff9800; text-decoration: none;">{{ itinerary.location }}</a></strong> 🗺️ • 📅 <strong>{{ itinerary.duration }} Day{{ 's' if itinerary.duration != 1 else '' }}</strong></p>
+                <p>Created on {{ itinerary.created_date.strftime('%B %d, %Y') if itinerary.created_date else 'Unknown' }}</p>
+            </div>
+        </div>
+
+        <div class="location-highlight">
+            <h3>🎯 About {{ itinerary.location }}</h3>
+            <p>Discover the best of {{ itinerary.location }} with this carefully curated {{ itinerary.duration }}-day itinerary featuring specific attractions, local experiences, and authentic dining options.</p>
+            {% if itinerary.location == "Goa" %}
+            <p><strong>🏖️ Highlights:</strong> Beautiful beaches, Portuguese heritage, vibrant nightlife, and delicious seafood cuisine.</p>
+            {% elif itinerary.location == "Kerala" %}
+            <p><strong>🌴 Highlights:</strong> Backwaters, spice plantations, wildlife sanctuaries, and Ayurvedic wellness.</p>
+            {% elif itinerary.location == "Rajasthan" %}
+            <p><strong>🏰 Highlights:</strong> Majestic forts, palaces, desert safaris, and rich cultural heritage.</p>
+            {% elif itinerary.location == "Himachal Pradesh" %}
+            <p><strong>🏔️ Highlights:</strong> Mountain adventures, colonial architecture, and scenic valleys.</p>
+            {% elif itinerary.location == "Uttarakhand" %}
+            <p><strong>🕉️ Highlights:</strong> Spiritual destinations, trekking trails, and Himalayan beauty.</p>
+            {% elif itinerary.location == "Mumbai" %}
+            <p><strong>🌆 Highlights:</strong> Bollywood glamour, colonial architecture, street food, and bustling markets.</p>
+            {% elif itinerary.location == "Delhi" %}
+            <p><strong>🏛️ Highlights:</strong> Mughal monuments, historical sites, and diverse culinary scene.</p>
+            {% elif itinerary.location == "Agra" %}
+            <p><strong>❤️ Highlights:</strong> Taj Mahal, Mughal architecture, and marble craftsmanship.</p>
+            {% elif itinerary.location == "Varanasi" %}
+            <p><strong>🕯️ Highlights:</strong> Ganges rituals, ancient temples, and spiritual atmosphere.</p>
+            {% elif itinerary.location == "Jaipur" %}
+            <p><strong>🟡 Highlights:</strong> Pink City charm, royal palaces, and vibrant markets.</p>
+            {% elif itinerary.location == "Udaipur" %}
+            <p><strong>🏞️ Highlights:</strong> Lake palaces, romantic ambiance, and Rajasthani culture.</p>
+            {% elif itinerary.location == "Pondicherry" %}
+            <p><strong>🇫🇷 Highlights:</strong> French colonial architecture, beaches, and spiritual centers.</p>
+            {% elif itinerary.location == "Shimla" %}
+            <p><strong>🌳 Highlights:</strong> Colonial buildings, Mall Road shopping, and mountain views.</p>
+            {% elif itinerary.location == "Manali" %}
+            <p><strong>❄️ Highlights:</strong> Adventure sports, Tibetan culture, and valley exploration.</p>
+            {% elif itinerary.location == "Leh Ladakh" %}
+            <p><strong>🌄 Highlights:</strong> High-altitude landscapes, monasteries, and desert mountains.</p>
+            {% elif itinerary.location == "Kashmir" %}
+            <p><strong>🌸 Highlights:</strong> Mughal gardens, houseboats, and natural beauty.</p>
+            {% elif itinerary.location == "Bangalore" %}
+            <p><strong>🏙️ Highlights:</strong> Tech hub, gardens, cuisine, and colonial architecture.</p>
+            {% elif itinerary.location == "Chennai" %}
+            <p><strong>🏖️ Highlights:</strong> South Indian culture, beaches, temples, and music heritage.</p>
+            {% elif itinerary.location == "Kolkata" %}
+            <p><strong>🏛️ Highlights:</strong> Colonial architecture, cultural festivals, and street food.</p>
+            {% elif itinerary.location == "Ayodhya" %}
+            <p><strong>🙏 Highlights:</strong> Ram Janmabhoomi Temple, spiritual sites, and religious significance.</p>
+            {% else %}
+            <p><strong>✨ Highlights:</strong> Explore the unique culture, attractions, and experiences of {{ itinerary.location }}.</p>
+            {% endif %}
+        </div>
+
+        <div class="map-section">
+            <h3>🗺️ Explore {{ itinerary.location }} on Map</h3>
+            <p>Get directions and explore the area around {{ itinerary.location }}.</p>
+            <div class="map-links">
+                <a href="https://www.google.com/maps/search/{{ itinerary.location | urlencode }}" target="_blank" class="map-btn google-maps">
+                    🗺️ View on Google Maps
+                </a>
+                <a href="https://www.openstreetmap.org/search?query={{ itinerary.location | urlencode }}" target="_blank" class="map-btn open-street">
+                    🌍 View on OpenStreetMap
+                </a>
             </div>
         </div>
 
@@ -197,17 +346,59 @@
                 
                 <div class="activity-slot morning-slot">
                     <label><span class="activity-icon">🌅</span>Morning Activity</label>
-                    <input type="text" name="day_{{ day.day_number }}_morning" value="{{ day.morning or '' }}" placeholder="e.g., Visit local temple, Morning yoga, Breakfast at cafe">
+                    {% if day.morning %}
+                        <div class="activity-location">
+                            {% if "Visit " in day.morning %}
+                                📍 <a href="https://www.google.com/maps/search/{{ day.morning.split(' - ')[0].replace('Visit ', '') | urlencode }}" target="_blank" class="place-link">{{ day.morning.split(" - ")[0].replace("Visit ", "") }}</a>
+                            {% elif "Dinner at " in day.morning %}
+                                🍽️ <a href="https://www.google.com/maps/search/{{ day.morning.split(' - ')[0].replace('Dinner at ', '') | urlencode }}" target="_blank" class="place-link">{{ day.morning.split(" - ")[0].replace("Dinner at ", "") }}</a>
+                            {% else %}
+                                🎯 <a href="https://www.google.com/maps/search/{{ day.morning.split(' - ')[0] | urlencode if ' - ' in day.morning else day.morning | urlencode }}" target="_blank" class="place-link">{{ day.morning.split(" - ")[0] if " - " in day.morning else day.morning }}</a>
+                            {% endif %}
+                        </div>
+                        {% if " - " in day.morning %}
+                        <div class="activity-description">{{ day.morning.split(" - ")[1] }}</div>
+                        {% endif %}
+                    {% endif %}
+                    <input type="text" name="day_{{ day.day_number }}_morning" value="{{ day.morning or '' }}" placeholder="e.g., Visit Taj Mahal - UNESCO World Heritage Site">
                 </div>
 
                 <div class="activity-slot afternoon-slot">
                     <label><span class="activity-icon">☀️</span>Afternoon Activity</label>
-                    <input type="text" name="day_{{ day.day_number }}_afternoon" value="{{ day.afternoon or '' }}" placeholder="e.g., Museum tour, Lunch, Adventure sports">
+                    {% if day.afternoon %}
+                        <div class="activity-location">
+                            {% if "Visit " in day.afternoon %}
+                                📍 <a href="https://www.google.com/maps/search/{{ day.afternoon.split(' - ')[0].replace('Visit ', '') | urlencode }}" target="_blank" class="place-link">{{ day.afternoon.split(" - ")[0].replace("Visit ", "") }}</a>
+                            {% elif "Dinner at " in day.afternoon %}
+                                🍽️ <a href="https://www.google.com/maps/search/{{ day.afternoon.split(' - ')[0].replace('Dinner at ', '') | urlencode }}" target="_blank" class="place-link">{{ day.afternoon.split(" - ")[0].replace("Dinner at ", "") }}</a>
+                            {% else %}
+                                🎯 <a href="https://www.google.com/maps/search/{{ day.afternoon.split(' - ')[0] | urlencode if ' - ' in day.afternoon else day.afternoon | urlencode }}" target="_blank" class="place-link">{{ day.afternoon.split(" - ")[0] if " - " in day.afternoon else day.afternoon }}</a>
+                            {% endif %}
+                        </div>
+                        {% if " - " in day.afternoon %}
+                        <div class="activity-description">{{ day.afternoon.split(" - ")[1] }}</div>
+                        {% endif %}
+                    {% endif %}
+                    <input type="text" name="day_{{ day.day_number }}_afternoon" value="{{ day.afternoon or '' }}" placeholder="e.g., Visit Amber Fort - Hilltop fort with palaces">
                 </div>
 
                 <div class="activity-slot evening-slot">
                     <label><span class="activity-icon">🌙</span>Evening Activity</label>
-                    <input type="text" name="day_{{ day.day_number }}_evening" value="{{ day.evening or '' }}" placeholder="e.g., Sunset at viewpoint, Dinner, Local market">
+                    {% if day.evening %}
+                        <div class="activity-location">
+                            {% if "Visit " in day.evening %}
+                                📍 <a href="https://www.google.com/maps/search/{{ day.evening.split(' - ')[0].replace('Visit ', '') | urlencode }}" target="_blank" class="place-link">{{ day.evening.split(" - ")[0].replace("Visit ", "") }}</a>
+                            {% elif "Dinner at " in day.evening %}
+                                🍽️ <a href="https://www.google.com/maps/search/{{ day.evening.split(' - ')[0].replace('Dinner at ', '') | urlencode }}" target="_blank" class="place-link">{{ day.evening.split(" - ")[0].replace("Dinner at ", "") }}</a>
+                            {% else %}
+                                🎯 <a href="https://www.google.com/maps/search/{{ day.evening.split(' - ')[0] | urlencode if ' - ' in day.evening else day.evening | urlencode }}" target="_blank" class="place-link">{{ day.evening.split(" - ")[0] if " - " in day.evening else day.evening }}</a>
+                            {% endif %}
+                        </div>
+                        {% if " - " in day.evening %}
+                        <div class="activity-description">{{ day.evening.split(" - ")[1] }}</div>
+                        {% endif %}
+                    {% endif %}
+                    <input type="text" name="day_{{ day.day_number }}_evening" value="{{ day.evening or '' }}" placeholder="e.g., Dinner at Peshawri - Mughal cuisine">
                 </div>
 
                 <div class="notes-section form-section">
@@ -219,6 +410,157 @@
 
             <button type="submit" class="save-btn">💾 Save Itinerary Changes</button>
         </form>
-    </div>
+
+        <div class="location-tips">
+            <h4>💡 Travel Tips for {{ itinerary.location }}</h4>
+            {% if itinerary.location == "Goa" %}
+            <ul>
+                <li><strong>Best Time:</strong> November to May (avoid monsoon)</li>
+                <li><strong>Transport:</strong> Rent scooters or use local taxis</li>
+                <li><strong>Currency:</strong> Carry some cash for small purchases</li>
+                <li><strong>Safety:</strong> Be cautious with valuables on crowded beaches</li>
+            </ul>
+            {% elif itinerary.location == "Kerala" %}
+            <ul>
+                <li><strong>Best Time:</strong> September to March</li>
+                <li><strong>Transport:</strong> Houseboats, local buses, or rented cars</li>
+                <li><strong>Cuisine:</strong> Try appam, fish curry, and avial</li>
+                <li><strong>Weather:</strong> Can be humid, carry light cotton clothing</li>
+            </ul>
+            {% elif itinerary.location == "Rajasthan" %}
+            <ul>
+                <li><strong>Best Time:</strong> October to March</li>
+                <li><strong>Transport:</strong> Trains, buses, or self-drive</li>
+                <li><strong>Culture:</strong> Respect local customs and dress modestly</li>
+                <li><strong>Bargaining:</strong> Expected in markets, start with half the asking price</li>
+            </ul>
+            {% elif itinerary.location == "Himachal Pradesh" %}
+            <ul>
+                <li><strong>Best Time:</strong> March to June, September to November</li>
+                <li><strong>Altitude:</strong> Acclimatize to avoid altitude sickness</li>
+                <li><strong>Transport:</strong> Toy train from Kalka to Shimla is recommended</li>
+                <li><strong>Weather:</strong> Carry warm clothes, temperatures drop at night</li>
+            </ul>
+            {% elif itinerary.location == "Uttarakhand" %}
+            <ul>
+                <li><strong>Best Time:</strong> March to June, September to November</li>
+                <li><strong>Spirituality:</strong> Maintain silence at religious sites</li>
+                <li><strong>Activities:</strong> Yoga, meditation, and nature walks</li>
+                <li><strong>Transport:</strong> Shared jeeps and local buses</li>
+            </ul>
+            {% elif itinerary.location == "Mumbai" %}
+            <ul>
+                <li><strong>Best Time:</strong> October to May</li>
+                <li><strong>Transport:</strong> Local trains, taxis, or metro</li>
+                <li><strong>Street Food:</strong> Try pav bhaji, vada pav, and bhel puri</li>
+                <li><strong>Timing:</strong> Avoid peak hours for local trains</li>
+            </ul>
+            {% elif itinerary.location == "Delhi" %}
+            <ul>
+                <li><strong>Best Time:</strong> October to March</li>
+                <li><strong>Transport:</strong> Metro, taxis, or app-based cabs</li>
+                <li><strong>Monuments:</strong> Book tickets online to avoid queues</li>
+                <li><strong>Water:</strong> Drink only bottled or filtered water</li>
+            </ul>
+            {% elif itinerary.location == "Agra" %}
+            <ul>
+                <li><strong>Best Time:</strong> October to March</li>
+                <li><strong>Taj Mahal:</strong> Visit at sunrise for best experience</li>
+                <li><strong>Tickets:</strong> Book online in advance</li>
+                <li><strong>Transport:</strong> Day trip from Delhi is convenient</li>
+            </ul>
+            {% elif itinerary.location == "Varanasi" %}
+            <ul>
+                <li><strong>Best Time:</strong> October to March</li>
+                <li><strong>Ganges:</strong> Early morning boat rides are magical</li>
+                <li><strong>Culture:</strong> Respect local customs and photography rules</li>
+                <li><strong>Transport:</strong> Cycle rickshaws or walk in old city</li>
+            </ul>
+            {% elif itinerary.location == "Jaipur" %}
+            <ul>
+                <li><strong>Best Time:</strong> October to March</li>
+                <li><strong>Amber Fort:</strong> Visit early morning, elephant ride optional</li>
+                <li><strong>Shopping:</strong> Johari Bazaar for jewelry and textiles</li>
+                <li><strong>Transport:</strong> Auto-rickshaws or taxis</li>
+            </ul>
+            {% elif itinerary.location == "Udaipur" %}
+            <ul>
+                <li><strong>Best Time:</strong> October to March</li>
+                <li><strong>Lake Cruise:</strong> Evening cruise on Lake Pichola</li>
+                <li><strong>Architecture:</strong> Known as Venice of East</li>
+                <li><strong>Transport:</strong> Walking distance in old city</li>
+            </ul>
+            {% elif itinerary.location == "Pondicherry" %}
+            <ul>
+                <li><strong>Best Time:</strong> November to March</li>
+                <li><strong>Transport:</strong> Bicycles or auto-rickshaws</li>
+                <li><strong>Cuisine:</strong> French bakeries and South Indian food</li>
+                <li><strong>Colonial:</strong> French Quarter has European architecture</li>
+            </ul>
+            {% elif itinerary.location == "Shimla" %}
+            <ul>
+                <li><strong>Best Time:</strong> March to June, December to February</li>
+                <li><strong>Mall Road:</strong> Main shopping and dining area</li>
+                <li><strong>Transport:</strong> Walking or horse rides</li>
+                <li><strong>Weather:</strong> Can be foggy, carry warm clothes</li>
+            </ul>
+            {% elif itinerary.location == "Manali" %}
+            <ul>
+                <li><strong>Best Time:</strong> March to June</li>
+                <li><strong>Rohtang:</strong> Requires special permit</li>
+                <li><strong>Activities:</strong> Paragliding, rafting, trekking</li>
+                <li><strong>Transport:</strong> Buses from Delhi, then local taxis</li>
+            </ul>
+            {% elif itinerary.location == "Leh Ladakh" %}
+            <ul>
+                <li><strong>Best Time:</strong> June to September</li>
+                <li><strong>Altitude:</strong> Acclimatize properly to avoid AMS</li>
+                <li><strong>Transport:</strong> Flight to Leh, then SUVs</li>
+                <li><strong>Weather:</strong> Extreme temperatures, carry warm gear</li>
+            </ul>
+            {% elif itinerary.location == "Kashmir" %}
+            <ul>
+                <li><strong>Best Time:</strong> April to October</li>
+                <li><strong>Houseboats:</strong> Stay on Dal Lake for authentic experience</li>
+                <li><strong>Gardens:</strong> Mughal gardens are at their best in spring</li>
+                <li><strong>Transport:</strong> Shikaras on Dal Lake</li>
+            </ul>
+            {% elif itinerary.location == "Bangalore" %}
+            <ul>
+                <li><strong>Best Time:</strong> October to March</li>
+                <li><strong>Transport:</strong> Metro, buses, or app-based cabs</li>
+                <li><strong>Cuisine:</strong> Try filter coffee and South Indian food</li>
+                <li><strong>Weather:</strong> Pleasant climate year-round</li>
+            </ul>
+            {% elif itinerary.location == "Chennai" %}
+            <ul>
+                <li><strong>Best Time:</strong> December to February</li>
+                <li><strong>Transport:</strong> Local trains, auto-rickshaws</li>
+                <li><strong>Cuisine:</strong> Dosas, idlis, and filter coffee</li>
+                <li><strong>Culture:</strong> Rich music and dance heritage</li>
+            </ul>
+            {% elif itinerary.location == "Kolkata" %}
+            <ul>
+                <li><strong>Best Time:</strong> October to March</li>
+                <li><strong>Transport:</strong> Metro, taxis, or hand-pulled rickshaws</li>
+                <li><strong>Cuisine:</strong> Street food and Bengali sweets</li>
+                <li><strong>Culture:</strong> Durga Puja and literary heritage</li>
+            </ul>
+            {% elif itinerary.location == "Ayodhya" %}
+            <ul>
+                <li><strong>Best Time:</strong> October to March</li>
+                <li><strong>Temple:</strong> Ram Janmabhoomi Temple visit</li>
+                <li><strong>Transport:</strong> Trains from major cities</li>
+                <li><strong>Culture:</strong> Deep spiritual significance</li>
+            </ul>
+            {% else %}
+            <ul>
+                <li><strong>Best Time:</strong> Check local weather conditions</li>
+                <li><strong>Transport:</strong> Research local transportation options</li>
+                <li><strong>Culture:</strong> Respect local customs and traditions</li>
+                <li><strong>Planning:</strong> Book accommodations in advance during peak season</li>
+            </ul>
+            {% endif %}
+        </div>
 </body>
 </html>
